@@ -1,0 +1,6 @@
+server:
+  host: localhost
+  port: ${PORT:3000}
+
+mongodb:
+  connectionUri: mongodb+srv://${MONGODB_USER:user1}:${MONGODB_PASSWORD}@${MONGODB_HOST}/nutrimate?retryWrites=true&w=majority

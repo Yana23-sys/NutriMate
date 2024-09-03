@@ -1,0 +1,6 @@
+server:
+  host: localhost
+  port: ${PORT:3000}
+
+mongodb:
+  connectionUri: mongodb://localhost:27017/nutrimate
