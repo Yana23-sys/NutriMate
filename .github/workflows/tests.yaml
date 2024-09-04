@@ -1,0 +1,57 @@
+name: CI - Run Tests
+
+# Trigger the workflow on push and pull request to any branch
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  backend-tests:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Specify the Node.js version
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Backend Tests
+        run: npm test
+
+#   frontend-tests:
+#     name: Frontend Tests
+#     runs-on: ubuntu-latest
+
+#     defaults:
+#       run:
+#         working-directory: ./frontend
+
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v3
+
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '16'  # Specify the Node.js version
+
+#       - name: Install Dependencies
+#         run: npm install
+
+#       - name: Run Frontend Tests
+#         run: npm test
