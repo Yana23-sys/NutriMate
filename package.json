@@ -3,11 +3,17 @@
     "version": "1.0.0",
     "description": "This is Calories tracker App",
     "scripts": {
-        "format": "prettier --write \"**/*.{js,json,css,jsx}\""
+        "format": "prettier --write \"**/*.{js,json,css,jsx}\"",
+        "prepare": "husky"
     },
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "husky": "^9.1.5",
+        "lint-staged": "^15.2.10",
         "prettier": "3.3.3"
+    },
+    "lint-staged": {
+        "**/*.{js,json,css,jsx}": "prettier --write --ignore-unknown"
     }
 }
