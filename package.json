@@ -4,7 +4,8 @@
     "description": "This is Calories tracker App",
     "scripts": {
         "format": "prettier --write \"**/*.{js,json,css,jsx}\"",
-        "prepare": "husky"
+        "prepare": "husky",
+        "prettier:check": "prettier --check \"**/*.{js,json,css,jsx}\""
     },
     "author": "",
     "license": "ISC",
