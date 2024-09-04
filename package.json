@@ -1,0 +1,13 @@
+{
+    "name": "nutrimate",
+    "version": "1.0.0",
+    "description": "This is Calories tracker App",
+    "scripts": {
+        "format": "prettier --write \"**/*.{js,json,css,jsx}\""
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "prettier": "3.3.3"
+    }
+}

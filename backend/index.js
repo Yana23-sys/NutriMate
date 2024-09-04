@@ -1,4 +1,4 @@
-const config = require('./config') 
+const config = require('./config')
 const { connectToMongo, disconnectFromMongo } = require('./db/mongodb')
 const app = require('./app')
 
