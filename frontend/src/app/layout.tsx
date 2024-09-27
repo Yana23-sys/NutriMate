@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import { Header } from "../components/Header";
 
 const RootLayout = ({ children }: Readonly<{children: React.ReactNode}>) => {
   return (
@@ -7,6 +8,7 @@ const RootLayout = ({ children }: Readonly<{children: React.ReactNode}>) => {
         <title>NutriMate</title>
       </head>
       <body>
+        <Header />
         {children}
       </body>
     </html>
