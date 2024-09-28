@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { login } from '@/store/auth/slice'
 
 
