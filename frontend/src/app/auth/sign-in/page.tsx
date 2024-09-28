@@ -5,22 +5,29 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '@/store';
 import { useRouter } from 'next/navigation'
 import { login } from '@/store/auth/slice'
+import { useState, useEffect } from 'react'
 
 
 const SignInPage = (): JSX.Element => {
     const router = useRouter()
     const { isAuthenticated } = useSelector((state: RootState) => state.auth)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const dispatch: AppDispatch = useDispatch()
 
-    if (isAuthenticated) {
-        router.push('/')
-    }
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push('/')
+        }
+    }, [isAuthenticated])
 
     const handleLogin = () => {
-
+        dispatch(login({ email, password }))
     }
 
     return (
@@ -37,10 +44,12 @@ const SignInPage = (): JSX.Element => {
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
+                  value={email}
                   id="email"
                   type="email"
                   placeholder="m@example.com"
                   required
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
@@ -53,7 +62,13 @@ const SignInPage = (): JSX.Element => {
                     Forgot your password?
                   </Link>
                 </div>
-                <Input id="password" type="password" required />
+                <Input 
+                  value={password} 
+                  id="password" 
+                  type="password" 
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
+                   />
               </div>
               <Button type="submit" className="w-full" onClick={handleLogin}>
                 Login

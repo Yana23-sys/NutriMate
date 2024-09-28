@@ -19,9 +19,14 @@ const initialState: AuthState = {
   user: null,
 }
 
-export const login = createAsyncThunk(
+interface Credentials {
+  email: string;
+  password: string;
+}
+
+export const login = createAsyncThunk<string, Credentials, { rejectValue: string }>(
   'auth/login',
-  async (loginData, thunkAPI) => {
+  async (loginData : Credentials, thunkAPI) => {
     try {
       console.log('logging in user', loginData)
       // send request to the backend which will return access token in response
