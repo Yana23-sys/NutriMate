@@ -5,22 +5,30 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '@/store';
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState, AppDispatch } from '@/store'
 import { useRouter } from 'next/navigation'
 import { login } from '@/store/auth/slice'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
+const signInSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters" })
+})
+
+type SignInFormValues = z.infer<typeof signInSchema>;
 
 const SignInPage = (): JSX.Element => {
     const router = useRouter()
     const { isAuthenticated } = useSelector((state: RootState) => state.auth)
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [emailError, setEmailError] = useState(false)
-    const [passwordError, setPasswordError] = useState(false)
-    const [errorMessage, setErrorMessage] = useState('')
     const dispatch: AppDispatch = useDispatch()
+
+    const { register, handleSubmit, formState: { errors } } = useForm<SignInFormValues>({
+      resolver: zodResolver(signInSchema)
+    })
 
 
     useEffect(() => {
@@ -29,32 +37,8 @@ const SignInPage = (): JSX.Element => {
         }
     }, [isAuthenticated])
 
-    const validateEmail = (email: string) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        return emailRegex.test(email)
-    }
 
-    const handleLogin = () => {
-      setEmailError(false)
-      setPasswordError(false)
-
-      if (!email) {
-        setEmailError(true)
-        setErrorMessage('Please enter your email address')
-        return
-      }
-      if (!password) {
-        setPasswordError(true)
-        setErrorMessage('Please enter your password')
-        return
-      }
-
-      if (!validateEmail(email)) {
-          setErrorMessage('Please enter a valid email address')
-          return
-      }
-
-      setErrorMessage('')
+    const handleLogin = ({ email, password } : SignInFormValues) => {
       dispatch(login({ email, password }))
     }
 
@@ -72,15 +56,13 @@ const SignInPage = (): JSX.Element => {
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
-                  value={email}
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
-                  className={emailError ? 'border-red-500' : ''}
-                  
+                  className={errors.email ? 'border-red-500' : ''}
+                  {...register("email")}
                 />
+                {errors.email && <p className="text-red-500">{errors.email.message}</p>}
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -93,20 +75,16 @@ const SignInPage = (): JSX.Element => {
                   </Link>
                 </div>
                 <Input 
-                  value={password} 
                   id="password" 
                   type="password" 
-                  required
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={passwordError ? 'border-red-500' : ''}
+                  placeholder="••••••"
+                  className={errors.password ? 'border-red-500' : ''}
+                  {...register("password")}
                    />
+                  {errors.password && <p className="text-red-500">{errors.password.message}</p>}
               </div>
 
-              {errorMessage && (
-                <p className="text-red-500">{errorMessage}</p>
-              )}
-
-              <Button type="submit" className="w-full" onClick={handleLogin}>
+              <Button type="submit" className="w-full" onClick={handleSubmit(handleLogin)}>
                 Login
               </Button>
               <Button variant="outline" className="w-full">

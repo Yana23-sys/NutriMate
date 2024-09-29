@@ -19,7 +19,7 @@ const initialState: AuthState = {
   user: null,
 }
 
-interface Credentials {
+export interface Credentials {
   email: string;
   password: string;
 }
