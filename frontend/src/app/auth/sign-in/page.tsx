@@ -17,6 +17,9 @@ const SignInPage = (): JSX.Element => {
     const { isAuthenticated } = useSelector((state: RootState) => state.auth)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [emailError, setEmailError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
     const dispatch: AppDispatch = useDispatch()
 
 
@@ -26,8 +29,33 @@ const SignInPage = (): JSX.Element => {
         }
     }, [isAuthenticated])
 
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        return emailRegex.test(email)
+    }
+
     const handleLogin = () => {
-        dispatch(login({ email, password }))
+      setEmailError(false)
+      setPasswordError(false)
+
+      if (!email) {
+        setEmailError(true)
+        setErrorMessage('Please enter your email address')
+        return
+      }
+      if (!password) {
+        setPasswordError(true)
+        setErrorMessage('Please enter your password')
+        return
+      }
+
+      if (!validateEmail(email)) {
+          setErrorMessage('Please enter a valid email address')
+          return
+      }
+
+      setErrorMessage('')
+      dispatch(login({ email, password }))
     }
 
     return (
@@ -50,6 +78,8 @@ const SignInPage = (): JSX.Element => {
                   placeholder="m@example.com"
                   required
                   onChange={(e) => setEmail(e.target.value)}
+                  className={emailError ? 'border-red-500' : ''}
+                  
                 />
               </div>
               <div className="grid gap-2">
@@ -68,8 +98,14 @@ const SignInPage = (): JSX.Element => {
                   type="password" 
                   required
                   onChange={(e) => setPassword(e.target.value)}
+                  className={passwordError ? 'border-red-500' : ''}
                    />
               </div>
+
+              {errorMessage && (
+                <p className="text-red-500">{errorMessage}</p>
+              )}
+
               <Button type="submit" className="w-full" onClick={handleLogin}>
                 Login
               </Button>
