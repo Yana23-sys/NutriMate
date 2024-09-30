@@ -15,10 +15,20 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
   import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useSelector } from 'react-redux'
+import { RootState } from '@/store'
 
 
 
-export const Header = (): JSX.Element => {
+
+
+export const Header = (): JSX.Element | null => {
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth)
+
+  if (!isAuthenticated) {
+    return null
+  }
+
     return (
         <header className="sticky top-0 flex h-16 items-center border-b bg-background px-4 md:px-6 justify-between">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-6 md:text-sm lg:gap-6">
