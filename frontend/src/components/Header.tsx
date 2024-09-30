@@ -1,20 +1,20 @@
 import Link from "next/link";
 import {
-    CircleUser,
-    Menu,
-    Package2
+  CircleUser,
+  Menu,
+  Package2
 } from "lucide-react"
 
-  import { Button } from "@/components/ui/button"
-  import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
-  import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store'
 
@@ -40,7 +40,7 @@ export const Header = (): JSX.Element | null => {
             <span className="sr-only">Acme Inc</span>
           </Link>
           <Link
-            href="#"
+            href="/log-meal"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
             Log Meal
@@ -78,7 +78,7 @@ export const Header = (): JSX.Element | null => {
                 <Package2 className="h-6 w-6" />
                 <span className="sr-only">Acme Inc</span>
               </Link>
-              <Link href="#" className="hover:text-foreground">
+              <Link href="/log-meal" className="hover:text-foreground">
                 Log Meal
               </Link>
               <Link
