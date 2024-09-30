@@ -8,6 +8,11 @@ import { Label } from '@/components/ui/label'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/store'
+import { signUp } from '@/store/auth/slice'
+import { useRouter } from 'next/navigation'
+
 
 const signUpSchema = z.object({
     firstName: z.string().min(1, { message: 'First name is required' }),
@@ -25,9 +30,19 @@ type SignUpFormValues = z.infer<typeof signUpSchema>
 
 const SignUpPage = (): JSX.Element => {
   const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormValues>({resolver: zodResolver(signUpSchema)})
+  const dispatch: AppDispatch = useDispatch()
+  const router = useRouter()
 
-    const handleSignUp = (data: SignUpFormValues) => {
-        console.log(data)
+
+
+    const handleSignUp = ({ email, password, firstName, lastName }: SignUpFormValues) => {
+      dispatch(signUp({ email, password, firstName, lastName }))
+      .then(() => {
+        router.push('/auth/sign-in')
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     }
 
     return (

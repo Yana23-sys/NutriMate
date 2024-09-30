@@ -3,6 +3,8 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 interface User {
     id: string;
     email: string;
+    firstName: string;
+    lastName: string;
 }
 
 interface AuthState {
@@ -19,7 +21,7 @@ const initialState: AuthState = {
   user: null,
 }
 
-export interface Credentials {
+interface Credentials {
   email: string;
   password: string;
 }
@@ -31,6 +33,31 @@ export const login = createAsyncThunk<string, Credentials, { rejectValue: string
       console.log('logging in user', loginData)
       // send request to the backend which will return access token in response
       return 'access-token-123'
+    } catch (error: Error | any) {
+      // axios will throw error.response.data
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+)
+
+interface NewUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+export const signUp =  createAsyncThunk<User, NewUser, { rejectValue: string }>(
+  'auth/sign-up',
+  async (signUpData : NewUser, thunkAPI) => {
+    try {
+      const user: User = {
+        ...signUpData, 
+        id: '1'
+      }
+      console.log('creating new user', user)
+      // send request to the backend which will return access token in response
+      return user
     } catch (error: Error | any) {
       // axios will throw error.response.data
       return thunkAPI.rejectWithValue(error.message);
@@ -60,7 +87,17 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.loading = false
         // state.error = action.payload // can store error here if it needs to be displayed
-      });
+      })
+      .addCase(signUp.pending, (state: AuthState) => {
+        state.loading = true
+      })
+      .addCase(signUp.fulfilled, (state: AuthState, action: PayloadAction<User>) => {
+        state.user = action.payload
+      })
+      .addCase(signUp.rejected, (state, action) => {
+        state.loading = false
+        // state.error = action.payload // can store error here if it needs to be displayed
+      })
   },
 })
 
